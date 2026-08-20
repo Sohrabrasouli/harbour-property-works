@@ -29,9 +29,12 @@ test("server-renders the Harbour marketing experience", async () => {
 });
 
 test("keeps the project planner interactive and honest", async () => {
-  const [planner, page] = await Promise.all([
+  const [planner, page, hero, motion, css] = await Promise.all([
     readFile(new URL("../app/project-planner.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/hero-showcase.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/site-motion.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.match(planner, /useState/);
@@ -42,5 +45,9 @@ test("keeps the project planner interactive and honest", async () => {
   assert.match(planner, /value=\{contact\}/);
   assert.match(planner, /checked=\{consent\}/);
   assert.match(page, /Final scope, availability, timing and pricing are confirmed after assessment/);
+  assert.match(hero, /Pause hero slideshow/);
+  assert.match(hero, /setInterval/);
+  assert.match(motion, /IntersectionObserver/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
   assert.doesNotMatch(page, /\(647\)|reviews|warranty|years in business/i);
 });
